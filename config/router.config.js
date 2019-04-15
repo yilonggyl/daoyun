@@ -290,6 +290,19 @@ export default [
           },
         ],
       },
+      //  System
+      {
+        name: 'system',
+        icon: 'appstore',
+        path: '/system',
+        routes: [
+          {
+            path: '/system/role-manager',
+            name: 'role-manager',
+            component: './system/RoleManager',
+          },
+        ],
+      },
       {
         component: '404',
       },
