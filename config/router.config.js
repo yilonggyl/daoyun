@@ -297,9 +297,47 @@ export default [
         path: '/system',
         routes: [
           {
+            path: '/system/menu-manager',
+            name: 'menu-manager',
+            component: './System/MenuManager',
+          },
+          {
             path: '/system/role-manager',
             name: 'role-manager',
-            component: './system/RoleManager',
+            component: './System/RoleManager',
+          },
+          {
+            path: '/system/user-manager',
+            name: 'user-manager',
+            component: './System/UserManager',
+          },
+        ],
+      },
+      //  System
+      {
+        name: 'standard',
+        icon: 'copy',
+        path: '/standard',
+        routes: [
+          {
+            path: '/standard/blank-with-title',
+            name: 'blank-with-title',
+            component: './Standard/BlankWithTitle',
+          },
+          {
+            path: '/standard/blank-with-form',
+            name: 'blank-with-form',
+            component: './Standard/BlankWithForm',
+          },
+          {
+            path: '/standard/blank-with-card',
+            name: 'blank-with-card',
+            component: './Standard/BlankWithCard',
+          },
+          {
+            path: '/standard/blank-with-table',
+            name: 'blank-with-table',
+            component: './Standard/BlankWithTable',
           },
         ],
       },
