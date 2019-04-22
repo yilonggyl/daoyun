@@ -122,6 +122,7 @@ class MenuManager extends PureComponent {
     ];
 
     const { menuData } = this.props;
+    console.log(menuData);
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,

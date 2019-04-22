@@ -8,6 +8,7 @@ import EditableLinkGroup from '@/components/EditableLinkGroup';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './Workplace.less';
+import { getUsername } from '../../utils/authority';
 
 const links = [
   {
@@ -50,6 +51,7 @@ class Workplace extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+      payload: getUsername('userName'),
     });
     dispatch({
       type: 'project/fetchNotice',

@@ -192,3 +192,16 @@ export const importCDN = (url, name) =>
     };
     document.head.appendChild(dom);
   });
+
+export function addKey(data) {
+  if (data === undefined) return data;
+  let index = 0;
+  const newData = data.map(function(item) {
+    const x = {
+      key: (index += 1),
+      ...item,
+    };
+    return x;
+  });
+  return newData;
+}

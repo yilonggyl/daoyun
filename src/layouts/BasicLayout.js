@@ -12,6 +12,7 @@ import Context from './MenuContext';
 import SiderMenu from '@/components/SiderMenu';
 import getPageTitle from '@/utils/getPageTitle';
 import styles from './BasicLayout.less';
+import { getUsername } from '../utils/authority';
 
 // lazy load SettingDrawer
 const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
@@ -49,8 +50,10 @@ class BasicLayout extends React.Component {
       dispatch,
       route: { routes, path, authority },
     } = this.props;
+    const userName = getUsername('userName');
     dispatch({
       type: 'user/fetchCurrent',
+      payload: userName,
     });
     dispatch({
       type: 'setting/getSetting',

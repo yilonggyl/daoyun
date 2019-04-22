@@ -83,8 +83,13 @@ export default {
   //   },
   // },
   proxy: {
+    // '/api/': {
+    //   target: 'https://preview.pro.ant.design/api/',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/api': '' },
+    // },
     '/api/': {
-      target: 'https://preview.pro.ant.design/api/',
+      target: 'http://114.115.155.218:8080/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },
