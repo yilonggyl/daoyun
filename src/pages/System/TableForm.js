@@ -282,21 +282,21 @@ class TableForm extends PureComponent {
               <Select
                 style={{ width: '100%' }}
                 placeholder="请选择"
-                defaultValue={text === 0 ? '普通用户' : '管理员'}
+                defaultValue={text === 0 ? '管理员' : '普通用户'}
                 onChange={value => {
                   this.handleChange(value, 'role_id', record.key);
                 }}
               >
                 <Option key={0} value={0}>
-                  普通用户
+                  管理员
                 </Option>
                 <Option key={1} value={1}>
-                  管理员
+                  普通用户
                 </Option>
               </Select>
             );
           }
-          return text === 0 ? '普通用户' : '管理员';
+          return text === 0 ? '管理员' : '普通用户';
         },
       },
       {
@@ -327,7 +327,7 @@ class TableForm extends PureComponent {
               </span>
             );
           }
-          if (record.role_id === 1) {
+          if (record.role_id === 0) {
             return (
               <span>
                 <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
