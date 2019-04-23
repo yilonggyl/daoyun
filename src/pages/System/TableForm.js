@@ -72,7 +72,16 @@ class TableForm extends PureComponent {
   };
 
   resetPassword = id => {
-    return id;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/resetPassword',
+      payload: id,
+      callback: res => {
+        if (res) {
+          message.info('重置成功！'); // 请求完成后返回的结果
+        }
+      },
+    });
   };
 
   handleChange = (value, fieldName, key) => {
@@ -322,7 +331,7 @@ class TableForm extends PureComponent {
                 <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
                 <Divider type="vertical" />
                 <Popconfirm title="是否重置密码？" onConfirm={() => this.resetPassword(record.id)}>
-                  <a href="#">重置密码</a>
+                  <a>重置密码</a>
                 </Popconfirm>
               </span>
             );
@@ -332,7 +341,7 @@ class TableForm extends PureComponent {
               <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
               <Divider type="vertical" />
               <Popconfirm title="是否重置密码？" onConfirm={() => this.resetPassword(record.id)}>
-                <a href="#">重置密码</a>
+                <a>重置密码</a>
               </Popconfirm>
               <Divider type="vertical" />
               <Popconfirm

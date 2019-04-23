@@ -4,6 +4,7 @@ import {
   deleteUser,
   insertUser,
   updateUser,
+  resetPassword,
 } from '@/services/user';
 
 export default {
@@ -49,6 +50,12 @@ export default {
         type: 'update',
         payload: response,
       });
+    },
+    *resetPassword({ payload, callback }, { call }) {
+      const response = yield call(resetPassword, payload);
+      if (callback && typeof callback === 'function') {
+        callback(response); // 返回结果
+      }
     },
   },
 
