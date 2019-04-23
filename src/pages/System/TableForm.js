@@ -148,6 +148,7 @@ class TableForm extends PureComponent {
           },
         });
       } else {
+        target.roleId = target.role_id;
         dispatch({
           type: 'user/updateUser',
           payload: target,
@@ -181,11 +182,12 @@ class TableForm extends PureComponent {
     const newData = data.filter(item => item.key !== key);
     this.setState({ data: newData });
     onChange(newData);
-
-    dispatch({
-      type: 'user/deleteUser',
-      payload: id,
-    });
+    if (id !== undefined) {
+      dispatch({
+        type: 'user/deleteUser',
+        payload: id,
+      });
+    }
   }
 
   render() {
@@ -252,21 +254,21 @@ class TableForm extends PureComponent {
               <Select
                 style={{ width: '100%' }}
                 placeholder="请选择"
-                defaultValue={text === 0 ? '在用' : '停用'}
+                defaultValue={text === 0 || text === '0' ? '在用' : '停用'}
                 onChange={value => {
                   this.handleChange(value, 'status', record.key);
                 }}
               >
-                <Option key={0} value={0}>
+                <Option key={0} value="0">
                   在用
                 </Option>
-                <Option key={1} value={1}>
+                <Option key={1} value="1">
                   停用
                 </Option>
               </Select>
             );
           }
-          return text === 0 ? '在用' : '停用';
+          return text === 0 || text === '0' ? '在用' : '停用';
         },
       },
       {
