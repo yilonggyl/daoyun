@@ -1,7 +1,7 @@
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': {
+  'GET /api/currentUser/admin': {
     name: 'Guo Yilong',
     avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     userid: '00000001',
@@ -135,4 +135,5 @@ export default {
       path: '/base/category/list',
     });
   },
+  '/api/daoyunuser': {},
 };

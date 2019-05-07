@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import {
@@ -12,13 +12,37 @@ import {
   Modal,
   message,
   Divider,
-  Table,
-  Tag,
+  TreeSelect,
 } from 'antd';
-import styles from '../List/TableList.less';
 
+const { SHOW_PARENT } = TreeSelect;
 const FormItem = Form.Item;
 const { Option } = Select;
+
+const treeData = [
+  {
+    title: 'Node1',
+    value: '0-0',
+    key: '0-0',
+    children: [
+      {
+        title: 'Child Node1',
+        value: '0-0-1',
+        key: '0-0-1',
+      },
+      {
+        title: 'Child Node2',
+        value: '0-0-2',
+        key: '0-0-2',
+      },
+    ],
+  },
+  {
+    title: 'Node2',
+    value: '0-1',
+    key: '0-1',
+  },
+];
 
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
@@ -51,8 +75,10 @@ const CreateForm = Form.create()(props => {
   loading: loading.models.rule,
 }))
 @Form.create()
-class RoleManager extends PureComponent {
-  state = {};
+class RoleManager extends React.Component {
+  state = {
+    selectValue: [],
+  };
 
   constructor(props) {
     super(props);
@@ -115,136 +141,137 @@ class RoleManager extends PureComponent {
     this.handleModalVisible();
   };
 
-  render() {
-    const columns = [
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => <a href="#">{text}</a>,
-      },
-      {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-      },
-      {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-      },
-      {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: tags => (
-          <span>
-            {tags.map(tag => {
-              let color = tag.length > 5 ? 'geekblue' : 'green';
-              if (tag === 'loser') {
-                color = 'volcano';
-              }
-              return (
-                <Tag color={color} key={tag}>
-                  {tag.toUpperCase()}
-                </Tag>
-              );
-            })}
-          </span>
-        ),
-      },
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <span>
-            <a href="#">Invite {record.name}</a>
-            <Divider type="vertical" />
-            <a href="#">Delete</a>
-          </span>
-        ),
-      },
-    ];
+  onChange = value => {
+    this.setState({ selectValue: value });
+  };
 
-    const data = [
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-      },
-      {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-      },
-    ];
+  handleSubmit = e => {
+    const { dispatch, form } = this.props;
+    e.preventDefault();
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        dispatch({
+          type: 'form/submitRegularForm',
+          payload: values,
+        });
+      }
+    });
+  };
+
+  render() {
     const {
-      loading,
       form: { getFieldDecorator },
     } = this.props;
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
     };
-    const { modalVisible } = this.state;
+    const { modalVisible, selectValue } = this.state;
+    const tProps = {
+      treeData,
+      value: selectValue,
+      onChange: this.onChange,
+      multiple: true,
+      treeCheckable: true,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: 'Please select',
+      style: {
+        width: 300,
+      },
+    };
     return (
       <PageHeaderWrapper title="角色管理">
-        <Card>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>
-              <Button
-                style={{ marginBottom: 8 }}
-                icon="plus"
-                type="primary"
+        <Card bordered={false}>
+          <Col sm={4} xs={24}>
+            <Row>
+              <Card
+                hoverable
+                bordered={false}
                 onClick={() => this.handleModalVisible(true)}
+                style={{ textAlign: 'center' }}
               >
-                新建
-              </Button>
-              <Form onSubmit={this.handleSearch} layout="inline">
-                <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-                  <Col md={8} sm={24}>
-                    <FormItem label="角色id">
-                      {getFieldDecorator('age')(<Input placeholder="请输入" />)}
-                    </FormItem>
-                  </Col>
-                  <Col md={8} sm={24}>
-                    <FormItem label="使用状态">
-                      {getFieldDecorator('status')(
-                        <Select placeholder="请选择" style={{ width: '100%' }}>
-                          <Option value="0">在用</Option>
-                          <Option value="1">停用</Option>
-                        </Select>
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col md={8} sm={24}>
-                    <span className={styles.submitButtons}>
-                      <Button type="primary" htmlType="submit">
-                        查询
-                      </Button>
-                      <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                        重置
-                      </Button>
-                    </span>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-            <div className={styles.tableListOperator}>
-              <Table columns={columns} dataSource={data} loading={loading} />
-            </div>
-          </div>
+                <h2>管理员</h2>
+                <span style={{ fontSize: 15 }}>拥有所有权限</span>
+              </Card>
+            </Row>
+            <Divider />
+            <Row>
+              <Card
+                hoverable
+                bordered={false}
+                onClick={() => this.handleModalVisible(true)}
+                style={{ textAlign: 'center' }}
+              >
+                <h2>普通用户</h2>
+                <span style={{ fontSize: 15 }}>只有部分权限</span>
+              </Card>
+            </Row>
+            <Divider />
+            <Row>
+              <Card
+                hoverable
+                bordered={false}
+                onClick={() => this.handleModalVisible(true)}
+                style={{ textAlign: 'center' }}
+              >
+                <h2>新增角色</h2>
+                <span style={{ fontSize: 15 }}>新增一个角色</span>
+              </Card>
+            </Row>
+          </Col>
+          <Col sm={20} xs={24} style={{ paddingLeft: 20 }}>
+            <h3>角色：管理员</h3>
+            <Form layout="vertical" onSubmit={this.handleSubmit}>
+              <FormItem label="唯一键">
+                {getFieldDecorator('key', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input unique key!',
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+              <FormItem label="角色名称">
+                {getFieldDecorator('name', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input role name!',
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+              <FormItem label="状态">
+                {getFieldDecorator('status', {
+                  rules: [{ required: true, message: '请选择状态！' }],
+                })(
+                  <Select placeholder="请选择" style={{ width: '100%' }}>
+                    <Option value="0">在用</Option>
+                    <Option value="1">停用</Option>
+                  </Select>
+                )}
+              </FormItem>
+              <FormItem label="备注说明">
+                {getFieldDecorator('note', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input note message!',
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+              <FormItem label="拥有权限">
+                <TreeSelect {...tProps} />
+              </FormItem>
+              <FormItem style={{ marginTop: 32 }}>
+                <Button type="primary" htmlType="submit">
+                  提交
+                </Button>
+              </FormItem>
+            </Form>
+          </Col>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderWrapper>
