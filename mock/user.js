@@ -135,4 +135,5 @@ export default {
       path: '/base/category/list',
     });
   },
+  '/api/daoyunuser': {},
 };
