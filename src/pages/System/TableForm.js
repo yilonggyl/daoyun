@@ -277,12 +277,16 @@ class TableForm extends PureComponent {
         key: 'role_id',
         width: '20%',
         render: (text, record) => {
+          let typeText =  '';
+          if (text === 0) typeText = '管理员';
+          else if(text === 1) typeText = '老师';
+          else typeText = '学生';
           if (record.editable) {
             return (
               <Select
                 style={{ width: '100%' }}
                 placeholder="请选择"
-                defaultValue={text === 0 ? '管理员' : '普通用户'}
+                defaultValue={typeText}
                 onChange={value => {
                   this.handleChange(value, 'role_id', record.key);
                 }}
@@ -291,12 +295,15 @@ class TableForm extends PureComponent {
                   管理员
                 </Option>
                 <Option key={1} value={1}>
-                  普通用户
+                  老师
+                </Option>
+                <Option key={1} value={1}>
+                  学生
                 </Option>
               </Select>
             );
           }
-          return text === 0 ? '管理员' : '普通用户';
+          return typeText;
         },
       },
       {

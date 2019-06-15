@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { Form, Input, Upload, Select, Button } from 'antd';
+import { Form, Input, Upload, Select, Button, message } from 'antd';
 import { connect } from 'dva';
 import styles from './BaseView.less';
 import GeographicView from './GeographicView';
@@ -81,7 +81,12 @@ class BaseView extends Component {
   getViewDom = ref => {
     this.view = ref;
   };
-
+  
+  handleSubmit = e => {
+    e.preventDefault();
+    message.info('更新成功！');
+  };
+  
   render() {
     const {
       form: { getFieldDecorator },
@@ -173,7 +178,7 @@ class BaseView extends Component {
                 ],
               })(<PhoneView />)}
             </FormItem>
-            <Button type="primary">
+            <Button type="primary" htmlType="submit">
               <FormattedMessage
                 id="app.settings.basic.update"
                 defaultMessage="Update Information"

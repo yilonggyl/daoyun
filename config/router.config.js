@@ -266,10 +266,10 @@ export default [
                 component: './Account/Settings/NotificationView',
               },
             ],
-            authority: ['admin', 'user']
+            authority: ['admin', 'teacher', 'student']
           },
         ],
-        authority: ['admin', 'user']
+        authority: ['admin', 'teacher', 'student']
       },
       // //  editor
       // {
@@ -301,6 +301,11 @@ export default [
         path: '/system',
         routes: [
           {
+            path: '/system/user-manager',
+            name: 'user-manager',
+            component: './System/UserManager',
+          },
+          {
             path: '/system/menu-manager',
             name: 'menu-manager',
             component: './System/MenuManager',
@@ -309,11 +314,6 @@ export default [
             path: '/system/role-manager',
             name: 'role-manager',
             component: './System/RoleManager',
-          },
-          {
-            path: '/system/user-manager',
-            name: 'user-manager',
-            component: './System/UserManager',
           },
         ],
         authority: ['admin']

@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const { modalVisible, form, handleAdd, handleModalVisible, currentDataProps } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -19,28 +19,32 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="添加菜单"
+      title={currentDataProps.title}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="名字">
         {form.getFieldDecorator('name', {
-          rules: [{ required: true, message: '请输入名字！', min: 3 }],
+          rules: [{ required: true, min: 3 }],
+          initialValue: currentDataProps.name
         })(<Input placeholder="请输入" />)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="路径">
         {form.getFieldDecorator('path', {
-          rules: [{ required: true, message: '请输入路径！' }],
+          rules: [{ required: true}],
+          initialValue: currentDataProps.path
         })(<Input placeholder="请输入" />)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="角色权限">
         {form.getFieldDecorator('authority', {
-          rules: [{ required: true, message: '请选择角色权限！' }],
+          rules: [{ required: true }],
+          initialValue: currentDataProps.authority
         })(
           <Select mode="multiple" placeholder="请选择" style={{ width: '100%' }}>
             <Option value="admin">admin</Option>
-            <Option value="user">user</Option>
+            <Option value="teacher">teacher</Option>
+            <Option value="student">student</Option>
           </Select>
         )}
       </FormItem>
@@ -55,13 +59,18 @@ const CreateForm = Form.create()(props => {
 }))
 @Form.create()
 class MenuManager extends PureComponent {
-  state = {};
 
   constructor(props) {
     super(props);
     this.formLayout = {
       labelCol: { span: 7 },
       wrapperCol: { span: 13 },
+    };
+    this.state = {
+      currentData: {
+        title: '添加菜单'
+      },
+      dataList: props.menuData
     };
   }
 
@@ -73,15 +82,38 @@ class MenuManager extends PureComponent {
 
   handleAdd = fields => {
     const { dispatch } = this.props;
+    const {currentData, dataList} = this.state;
     dispatch({
       type: 'rule/add',
       payload: {
         address: fields.address,
       },
     });
-
-    message.success('添加成功');
+    if (currentData.title === '添加菜单') {
+      message.success('添加成功！请在本地创建该文件，并在router.config.js中配置方能生效！');
+      dataList.push(fields);
+    } else {
+      message.success('更新成功！');
+    }
     this.handleModalVisible();
+  };
+  
+  editMenu = (record) => {
+    this.setState({currentData: {
+      ...record,
+      title: '编辑菜单'
+    }});
+    this.handleModalVisible(true);
+  };
+  
+  addMenu = () => {
+    this.setState({currentData: {
+      title: '添加菜单',
+      name: '',
+      path: '',
+      authority: []
+    }});
+    this.handleModalVisible(true);
   };
 
   render() {
@@ -103,6 +135,16 @@ class MenuManager extends PureComponent {
                 {text[1]}
               </span>
             );
+          if (text.length === 3)
+            return (
+              <span>
+                {text[0]}
+                <Divider type="vertical" />
+                {text[1]}
+                <Divider type="vertical" />
+                {text[2]}
+              </span>
+            );
           return text;
         },
       },
@@ -110,9 +152,9 @@ class MenuManager extends PureComponent {
         title: 'Action',
         dataIndex: '',
         key: 'x',
-        render: () => (
+        render: (record) => (
           <span>
-            <a href="#">Edit</a>
+            <a onClick={() => this.editMenu(record)}>Edit</a>
             <Divider type="vertical" />
             <a href="#">Delete</a>
           </span>
@@ -120,14 +162,13 @@ class MenuManager extends PureComponent {
         width: 30,
       },
     ];
-
-    const { menuData } = this.props;
-    console.log(menuData);
+    
+    const { modalVisible, currentData, dataList } = this.state;
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
+      currentDataProps: currentData
     };
-    const { modalVisible } = this.state;
     return (
       <PageHeaderWrapper title="菜单管理">
         <Card>
@@ -137,13 +178,13 @@ class MenuManager extends PureComponent {
                 style={{ marginBottom: 8 }}
                 icon="plus"
                 type="primary"
-                onClick={() => this.handleModalVisible(true)}
+                onClick={() => this.addMenu()}
               >
                 新建
               </Button>
             </div>
             <div className={styles.tableListOperator}>
-              <Table rowKey={record => record.name} columns={columns} dataSource={menuData} />
+              <Table rowKey={record => record.name} columns={columns} dataSource={dataList} />
             </div>
           </div>
         </Card>
