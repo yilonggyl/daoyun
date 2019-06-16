@@ -24,7 +24,27 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/account/settings', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/account/settings', authority: ['admin', 'teacher', 'student'] },
+      {
+        path: '/course',
+        name: 'course',
+        icon: 'bank',
+        routes: [
+          {
+            path: '/course/course-manage',
+            name: 'course-manage',
+            component: './course/CourseManage',
+            authority: ['admin', 'teacher']
+          },
+          {
+            path: '/course/course-list',
+            name: 'course-list',
+            component: './course/CourseList',
+            authority: ['admin', 'student']
+          },
+        ],
+        authority: ['admin', 'teacher', 'student']
+      },
       // {
       //   path: '/dashboard',
       //   name: 'dashboard',

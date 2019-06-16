@@ -51,4 +51,7 @@ export default {
   'menu.standard.blank-with-form': '标准表单页',
   'menu.standard.blank-with-card': '标准卡片页',
   'menu.standard.blank-with-table': '标准列表页',
+  'menu.course': '班课管理',
+  'menu.course.course-manage': '班课列表',
+  'menu.course.course-list': '我的班课'
 };

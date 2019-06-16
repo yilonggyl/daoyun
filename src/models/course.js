@@ -1,40 +1,40 @@
 import {
-  queryRoles,
-  deleteRole,
-  insertRole,
-  updateRole
-} from '@/services/role';
+  queryCourseList,
+  deleteCourse,
+  insertCourse,
+  updateCourse
+} from '@/services/course';
 
 export default {
-  namespace: 'role',
+  namespace: 'course',
   
   state: {
-    roleList: []
+    list: [],
   },
   
   effects: {
-    *queryRoles(_, { call, put }) {
-      const response = yield call(queryRoles);
+    *queryCourseList(_, { call, put }) {
+      const response = yield call(queryCourseList);
       yield put({
         type: 'save',
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *deleteRole({ payload }, { call, put }) {
-      const response = yield call(deleteRole, payload);
+    *deleteCourse({ payload }, { call, put }) {
+      const response = yield call(deleteCourse, payload);
       yield put({
         type: 'delete',
         payload: response,
       });
     },
-    *insertRole({ payload, callback }, { call }) {
-      const response = yield call(insertRole, payload);
+    *insertCourse({ payload, callback }, { call }) {
+      const response = yield call(insertCourse, payload);
       if (callback && typeof callback === 'function') {
         callback(response); // 返回结果
       }
     },
-    *updateRole({ payload }, { call, put }) {
-      const response = yield call(updateRole, payload);
+    *updateCourse({ payload }, { call, put }) {
+      const response = yield call(updateCourse, payload);
       yield put({
         type: 'update',
         payload: response,

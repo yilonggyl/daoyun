@@ -290,8 +290,8 @@ class RoleManager extends React.Component {
               onClick={() => this.refreshData(value.id)}
               style={{ textAlign: 'center' }}
             >
-              <h2>value.name</h2>
-              <span style={{ fontSize: 15 }}>value.note</span>
+              <h2>{value.name}</h2>
+              <span style={{ fontSize: 15 }}>{value.note}</span>
             </Card>
           </Row>
         );
