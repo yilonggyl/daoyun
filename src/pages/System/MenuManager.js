@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Form, Input, Select, Button, Modal, message, Divider, Table } from 'antd';
+import {Card, Form, Input, Select, Button, Modal, message, Divider, Table, Popconfirm} from 'antd';
 import styles from '../List/TableList.less';
 
 const FormItem = Form.Item;
@@ -115,6 +115,11 @@ class MenuManager extends PureComponent {
     }});
     this.handleModalVisible(true);
   };
+  
+  deleteMenu = () => {
+    message.success('删除成功！');
+    window.location.reload();
+  };
 
   render() {
     const columns = [
@@ -156,7 +161,10 @@ class MenuManager extends PureComponent {
           <span>
             <a onClick={() => this.editMenu(record)}>Edit</a>
             <Divider type="vertical" />
-            <a href="#">Delete</a>
+            <Popconfirm title="是否要删除此菜单？" onConfirm={() => this.deleteMenu()}>
+              <a href="#">Delete</a>
+            </Popconfirm>
+            
           </span>
         ),
         width: 30,
