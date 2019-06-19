@@ -82,6 +82,18 @@ export default {
   //     pathRewrite: { '^/server': '' },
   //   },
   // },
+  proxy: {
+    // '/api/': {
+    //   target: 'https://preview.pro.ant.design/api/',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/api': '' },
+    // },
+    '/api/': {
+      target: 'http://114.115.155.218:8080/',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,

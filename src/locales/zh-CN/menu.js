@@ -42,4 +42,16 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
+  'menu.system': '系统管理',
+  'menu.system.menu-manager': '菜单管理',
+  'menu.system.role-manager': '角色管理',
+  'menu.system.user-manager': '用户管理',
+  'menu.standard': '标准页',
+  'menu.standard.blank-with-title': '标准空白页',
+  'menu.standard.blank-with-form': '标准表单页',
+  'menu.standard.blank-with-card': '标准卡片页',
+  'menu.standard.blank-with-table': '标准列表页',
+  'menu.course': '班课管理',
+  'menu.course.course-manage': '班课列表',
+  'menu.course.course-list': '我的班课'
 };
