@@ -33,13 +33,13 @@ export default [
           {
             path: '/course/course-manage',
             name: 'course-manage',
-            component: './course/CourseManage',
+            component: './Course/CourseManage',
             authority: ['admin', 'teacher']
           },
           {
             path: '/course/course-list',
             name: 'course-list',
-            component: './course/CourseList',
+            component: './Course/CourseList',
             authority: ['admin', 'student']
           },
         ],
